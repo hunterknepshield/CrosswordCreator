@@ -88,7 +88,7 @@ const char Crossword::operator[](const std::pair<int, int>& loc) {
 std::ostream& operator<<(std::ostream& os, const Crossword& cw) {
 	for (const auto& row : cw.grid_) {
 		for (const auto& cell : row) {
-			os << std::get<0>(cell) << ' ' << std::flush;
+			os << std::get<0>(cell) << ' ';
 		}
 		os << std::endl;
 	}
