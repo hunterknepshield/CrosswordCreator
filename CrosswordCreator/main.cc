@@ -1,5 +1,5 @@
 //
-//  main.cpp
+//  main.cc
 //  CrosswordCreator
 //
 //  Created by Hunter Knepshield on 4/2/17.
