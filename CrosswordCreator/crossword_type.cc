@@ -78,13 +78,6 @@ std::unique_ptr<Crossword> Crossword::Create(int height, int width,
 		new Crossword(height, width, wordMap, grid));
 }
 
-const char Crossword::operator[](const std::pair<int, int>& loc) {
-	int r, c;
-	std::tie(r, c) = loc;
-	const auto& cell = grid_[r][c];
-	return std::get<0>(cell);
-}
-
 std::ostream& operator<<(std::ostream& os, const Crossword& cw) {
 	for (const auto& row : cw.grid_) {
 		for (const auto& cell : row) {

@@ -51,8 +51,6 @@ class Crossword {
 
 	friend std::ostream& operator<<(std::ostream& os, const Crossword& cw);
 
-	const char operator[](const std::pair<int, int>& loc);
-
    private:
 	/// An intermediate value that is the default for a not-yet-populated grid.
 	/// Should never appear in a valid Crossword instance.
@@ -61,6 +59,8 @@ class Crossword {
 	Crossword(int height, int width, const std::map<WordBeginning, Word>& words,
 			  const std::vector<std::vector<Cell>>& grid)
 		: height_(height), width_(width), words_(words), grid_(grid) {}
+
+	// WordBeginning mostConstrained();
 
 	int height_, width_;
 	std::map<WordBeginning, Word> words_;

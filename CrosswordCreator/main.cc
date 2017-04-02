@@ -44,7 +44,8 @@ int main(void) {
 				direction = Crossword::DOWN;
 				break;
 			default:
-				return 1;
+				std::cerr << "Invalid direction." << std::endl;
+				continue;
 		}
 
 		words.push_back(Crossword::MakeWord(r, c, direction, characters));
@@ -64,6 +65,7 @@ int main(void) {
 			  std::back_inserter(wordlist));
 	std::cout << "Read " << wordlist.size() << " words from the wordlist."
 			  << std::endl;
+	std::cout << std::endl;
 
 	if (crossword) {
 		std::cout << "Created a Crossword instance:" << std::endl;
