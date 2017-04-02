@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5A45C67B1E91881A00AB4ED3 /* main.cc in Sources */ = {isa = PBXBuildFile; fileRef = 5A45C67A1E91881A00AB4ED3 /* main.cc */; };
+		5A4AE6361E918DC700A453B4 /* crossword_type.cc in Sources */ = {isa = PBXBuildFile; fileRef = 5A4AE6341E918DC700A453B4 /* crossword_type.cc */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +26,8 @@
 /* Begin PBXFileReference section */
 		5A45C6771E91881A00AB4ED3 /* CrosswordCreator */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CrosswordCreator; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A45C67A1E91881A00AB4ED3 /* main.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cc; sourceTree = "<group>"; };
+		5A4AE6341E918DC700A453B4 /* crossword_type.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = crossword_type.cc; sourceTree = "<group>"; };
+		5A4AE6351E918DC700A453B4 /* crossword_type.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crossword_type.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +61,8 @@
 			isa = PBXGroup;
 			children = (
 				5A45C67A1E91881A00AB4ED3 /* main.cc */,
+				5A4AE6341E918DC700A453B4 /* crossword_type.cc */,
+				5A4AE6351E918DC700A453B4 /* crossword_type.h */,
 			);
 			path = CrosswordCreator;
 			sourceTree = "<group>";
@@ -119,6 +124,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A4AE6361E918DC700A453B4 /* crossword_type.cc in Sources */,
 				5A45C67B1E91881A00AB4ED3 /* main.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
