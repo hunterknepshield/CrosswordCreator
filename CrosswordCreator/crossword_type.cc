@@ -83,12 +83,22 @@ std::unique_ptr<Crossword> Crossword::Create(int height, int width,
 }
 
 std::pair<bool, Crossword> Crossword::Solve(
-	Crossword initial, const std::vector<std::string>& wordlist) {
+	Crossword puzzle, const std::vector<std::string>& wordlist, int verbosity) {
 	Word mostConstrained;
-	if (!initial.mostConstrained(&mostConstrained)) {
-		return {true, initial};
+	if (!puzzle.mostConstrained(&mostConstrained)) return {true, puzzle};
+
+	switch (verbosity) {
+		case 2:
+		case 1:
+			std::cout << "Attempting to fill in " << mostConstrained
+					  << std::endl;
+		default:
+			break;
 	}
 
+	int row, column;
+	WordDirection direction;
+	std::tie(row, column, direction) = std::get<0>(mostConstrained);
 	const std::vector<char>& characters = std::get<1>(mostConstrained);
 	// First, throw out any words of the wrong length or don't match the current
 	// wildcard pattern.
@@ -102,14 +112,64 @@ std::pair<bool, Crossword> Crossword::Solve(
 			return s.size() == wordLength && std::regex_match(s, regex);
 		});
 	possibilities.resize(std::distance(possibilities.begin(), filterIter));
-	std::cout << "Have " << possibilities.size()
-			  << " possibilities:" << std::endl;
-	for (const auto& possibility : possibilities) {
-		std::cout << possibility << std::endl;
-	}
-	if (possibilities.size() == 0) return {false, initial};
 
-	return {false, initial};
+	switch (verbosity) {
+		case 2:
+			for (const auto& possibility : possibilities) {
+				std::cout << possibility << std::endl;
+			}
+		case 1:
+			std::cout << "Have " << possibilities.size() << " possibilit"
+					  << (possibilities.size() == 1 ? "y" : "ies") << "."
+					  << std::endl;
+		default:
+			break;
+	}
+
+	if (possibilities.size() == 0) return {false, puzzle};
+	for (const auto& possibility : possibilities) {
+		// Set the word in the puzzle. Undo if we fail anywhere along the way.
+		std::vector<bool> undo(wordLength, false);
+		for (int i = 0; i < wordLength; i++) {
+			if (characters[i] == WILDCARD) {
+				undo[i] = true;
+				bool result = puzzle.setCharacter(
+					possibility[i], direction == ACROSS ? row : row + i,
+					direction == ACROSS ? column + i : column);
+				if (!result) {
+					switch (verbosity) {
+						case 2:
+						case 1:
+							std::cout << "Failed to set character " << i
+									  << " of " << possibility << std::endl;
+						default:
+							break;
+					}
+					// Undo everything up to this point.
+					for (int j = 0; j <= i; j++) {
+						if (undo[j])
+							puzzle.clearCharacter(
+								direction == ACROSS ? row : row + j,
+								direction == ACROSS ? column + j : column);
+					}
+					goto possibilityFailed;
+				}
+			}
+			// If this isn't a wildcard, we're guaranteed a match because of the
+			// filtering from above.
+		}
+		std::cout << puzzle << std::endl;
+		// We've successfully set every character for this possibility. Recurse.
+		{
+			const auto& solvedWithPuzzle = Solve(puzzle, wordlist);
+			if (solvedWithPuzzle.first) return solvedWithPuzzle;
+		}
+	possibilityFailed:
+		// For some reason, the compiler wants a statement here...
+		void();
+	}
+	// We've exhausted all possibilities at this level, backtrack.
+	return {false, puzzle};
 }
 
 bool Crossword::mostConstrained(Word* out) {
@@ -119,11 +179,12 @@ bool Crossword::mostConstrained(Word* out) {
 		const auto& characters = std::get<1>(word);
 		// Count all wildcards currently in the word.
 		int unknownCount = std::accumulate(characters.begin(), characters.end(),
-										   0, [](int soFar, const char& c) {
+										   0, [&](int soFar, const char& c) {
 											   if (c == WILDCARD)
 												   return soFar + 1;
 											   return soFar;
 										   });
+		if (unknownCount == 0) continue;  // This word is already filled in.
 		if (unknownCount < minimumUnknowns) {
 			minimumUnknowns = unknownCount;
 			*out = word;
@@ -139,9 +200,10 @@ bool Crossword::setCharacter(char value, int row, int column) {
 	WordBeginning across, down;
 	std::tie(existingChar, across, down) = grid_[row][column];
 	if (existingChar == value) return true;
-	if (existingChar != WILDCARD) {
-		std::cout << "Attempting to overwrite existing " << existingChar
-				  << " at (" << row << ", " << column << ")." << std::endl;
+	if (existingChar != WILDCARD && value != WILDCARD) {
+		std::cerr << "Attempting to overwrite existing " << existingChar
+				  << " at (" << row << ", " << column << ") with " << value
+				  << "." << std::endl;
 		return false;
 	}
 	std::get<0>(grid_[row][column]) = value;

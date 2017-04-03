@@ -40,7 +40,7 @@ class Crossword {
 	static const WordBeginning INVALID_DOWN;
 
 	static Word MakeWord(int row, int column, WordDirection direction,
-						 std::vector<char> characters) {
+						 const std::vector<char>& characters) {
 		return std::make_tuple(std::make_tuple(row, column, direction),
 							   characters);
 	}
@@ -51,7 +51,8 @@ class Crossword {
 											 const std::vector<Word>& words);
 
 	static std::pair<bool, Crossword> Solve(
-		Crossword initial, const std::vector<std::string>& wordlist);
+		Crossword puzzle, const std::vector<std::string>& wordlist,
+		int verbosity = 0);
 
 	friend std::ostream& operator<<(std::ostream& os, const Crossword& cw);
 
@@ -72,6 +73,10 @@ class Crossword {
 	/// Returns false if the operation failed for some reason. Normalizes all
 	/// characters to uppercase.
 	bool setCharacter(char value, int row, int column);
+	/// Resets the specified cell in the board to be the wildcard character.
+	inline bool clearCharacter(int row, int column) {
+		return setCharacter(WILDCARD, row, column);
+	}
 
 	int height_, width_;
 	std::map<WordBeginning, Word> words_;

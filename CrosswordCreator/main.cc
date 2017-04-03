@@ -14,6 +14,9 @@
 
 #include "crossword_type.h"
 
+// Verbosity settings. 0 = silent, 1 = print some things, 2 = print everything.
+int verbosity = 1;
+
 int main(void) {
 	int height, width;
 	std::cout << "Input puzzle height and width..." << std::endl;
@@ -73,13 +76,13 @@ int main(void) {
 			  << std::endl;
 	std::cout << std::endl;
 
-	bool result = crossword.setCharacter('A', 0, 0);
-	if (!result) {
-		std::cout << "Failed to set the character." << std::endl;
-	}
+	//	bool result = crossword.setCharacter('A', 0, 0);
+	//	if (!result) {
+	//		std::cout << "Failed to set the character." << std::endl;
+	//	}
 	std::cout << crossword;
 
-	Crossword::Solve(crossword, wordlist);
+	Crossword::Solve(crossword, wordlist, verbosity);
 
 	return 0;
 }
