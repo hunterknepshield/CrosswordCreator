@@ -148,19 +148,13 @@ std::pair<bool, Crossword> Crossword::Solve(
 					switch (verbosity) {
 						case 2:
 						case 1:
-							std::cout << "Failed to set character " << i
+							std::cout << "Failed to set character " << i + 1
 									  << " of '" << possibility
 									  << "' to fill in " << mostConstrained
 									  << std::endl;
+							std::cout << puzzle << std::endl;
 						default:
 							break;
-					}
-					// Undo everything up to this point.
-					for (int j = 0; j <= i; j++) {
-						if (undo[j])
-							puzzle.clearCharacter(
-								direction == ACROSS ? row : row + j,
-								direction == ACROSS ? column + j : column);
 					}
 					goto possibilityFailed;
 				}
@@ -168,6 +162,7 @@ std::pair<bool, Crossword> Crossword::Solve(
 			// If this isn't a wildcard, we're guaranteed a match because of the
 			// filtering from above.
 		}
+		std::cout << "Used '" << possibility << "'" << std::endl;
 		std::cout << puzzle << std::endl;
 		// We've successfully set every character for this possibility. Recurse.
 		{
@@ -182,9 +177,19 @@ std::pair<bool, Crossword> Crossword::Solve(
 			case 1:
 				std::cout << "Failed to use '" << possibility << "' to fill in "
 						  << mostConstrained << std::endl;
+				std::cout << puzzle << std::endl;
 			default:
 				break;
 		}
+		// Undo everything in this word that used to be a wildcard.
+		for (int i = 0; i < wordLength; i++) {
+			if (undo[i])
+				puzzle.clearCharacter(
+					direction == ACROSS ? row : row + i,
+					direction == ACROSS ? column + i : column);
+		}
+		std::cout << "After undoing:" << std::endl;
+		std::cout << puzzle << std::endl;
 	}
 	// We've exhausted all possibilities at this level, backtrack.
 	return {false, puzzle};
@@ -220,8 +225,8 @@ bool Crossword::setCharacter(char value, int row, int column) {
 	if (existingChar == value) return true;
 	if (existingChar != WILDCARD && value != WILDCARD) {
 		std::cerr << "Attempting to overwrite existing " << existingChar
-				  << " at (" << row << ", " << column << ") with " << value
-				  << "." << std::endl;
+				  << " at (" << row + 1 << ", " << column + 1 << ") with "
+				  << value << "." << std::endl;
 		return false;
 	}
 	std::get<0>(grid_[row][column]) = value;
@@ -248,8 +253,8 @@ std::ostream& operator<<(std::ostream& os, const Crossword& cw) {
 
 std::ostream& operator<<(std::ostream& os,
 						 const Crossword::WordBeginning& wordBeginning) {
-	os << "(" << std::get<0>(wordBeginning) << ", "
-	   << std::get<1>(wordBeginning) << ") ";
+	os << "(" << std::get<0>(wordBeginning) + 1 << ", "
+	   << std::get<1>(wordBeginning) + 1 << ") ";
 	switch (std::get<2>(wordBeginning)) {
 		case Crossword::ACROSS:
 			os << "across";
