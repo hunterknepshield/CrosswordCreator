@@ -51,9 +51,15 @@ int main(void) {
 		words.push_back(Crossword::MakeWord(r, c, direction, characters));
 	}
 	std::cout << std::endl;
+	// Make sure we can actually create this crossword before continuing.
+	auto crosswordPtr = Crossword::Create(height, width, words);
+	if (!crosswordPtr) {
+		std::cout << "Failed to create a Crossword instance." << std::endl;
+		return 1;
+	}
+	auto& crossword = *crosswordPtr;
 
-	auto crossword = Crossword::Create(height, width, words);
-
+	// Read in the wordlist.
 	std::vector<std::string> wordlist;
 	std::cout << "Input wordlist file (e.g. /usr/share/dict/words)..."
 			  << std::endl;
@@ -67,16 +73,13 @@ int main(void) {
 			  << std::endl;
 	std::cout << std::endl;
 
-	if (crossword) {
-		std::cout << "Created a Crossword instance:" << std::endl;
-		std::cout << *crossword;
-	} else {
-		std::cout << "Failed to create Crossword instance." << std::endl;
-		return 1;
+	bool result = crossword.setCharacter('A', 0, 0);
+	if (!result) {
+		std::cout << "Failed to set the character." << std::endl;
 	}
+	std::cout << crossword;
 
-	Crossword::Word mostConstrained;
-	std::cout << crossword->mostConstrained(&mostConstrained) << std::endl;
+	Crossword::Solve(crossword, wordlist);
 
 	return 0;
 }

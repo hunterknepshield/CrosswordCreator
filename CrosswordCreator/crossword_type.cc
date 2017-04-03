@@ -8,16 +8,18 @@
 
 #include "crossword_type.h"
 
+#include <algorithm>
 #include <iostream>
 #include <map>
 #include <memory>
 #include <numeric>
+#include <regex>
 #include <tuple>
 #include <utility>
 #include <vector>
 
-const char Crossword::WILDCARD = '?';
-const char Crossword::BLACK_SQUARE = '.';
+const char Crossword::WILDCARD = '.';
+const char Crossword::BLACK_SQUARE = '_';
 const Crossword::WordBeginning Crossword::INVALID_ACROSS = {-1, -1, ACROSS};
 const Crossword::WordBeginning Crossword::INVALID_DOWN = {-1, -1, DOWN};
 const Crossword::Cell Crossword::DEFAULT_CELL = std::make_tuple(
@@ -80,6 +82,36 @@ std::unique_ptr<Crossword> Crossword::Create(int height, int width,
 		new Crossword(height, width, wordMap, grid));
 }
 
+std::pair<bool, Crossword> Crossword::Solve(
+	Crossword initial, const std::vector<std::string>& wordlist) {
+	Word mostConstrained;
+	if (!initial.mostConstrained(&mostConstrained)) {
+		return {true, initial};
+	}
+
+	const std::vector<char>& characters = std::get<1>(mostConstrained);
+	// First, throw out any words of the wrong length or don't match the current
+	// wildcard pattern.
+	std::vector<std::string> possibilities(wordlist.size());
+	auto wordLength = characters.size();
+	std::string pattern(characters.begin(), characters.end());
+	std::regex regex(pattern, std::regex::icase);
+	auto filterIter = std::copy_if(
+		wordlist.begin(), wordlist.end(), possibilities.begin(),
+		[&](const std::string& s) {
+			return s.size() == wordLength && std::regex_match(s, regex);
+		});
+	possibilities.resize(std::distance(possibilities.begin(), filterIter));
+	std::cout << "Have " << possibilities.size()
+			  << " possibilities:" << std::endl;
+	for (const auto& possibility : possibilities) {
+		std::cout << possibility << std::endl;
+	}
+	if (possibilities.size() == 0) return {false, initial};
+
+	return {false, initial};
+}
+
 bool Crossword::mostConstrained(Word* out) {
 	int minimumUnknowns = std::numeric_limits<int>::max();
 	for (const auto& beginningAndWord : words_) {
@@ -98,6 +130,30 @@ bool Crossword::mostConstrained(Word* out) {
 		}
 	}
 	return minimumUnknowns != std::numeric_limits<int>::max();
+}
+
+bool Crossword::setCharacter(char value, int row, int column) {
+	// Normalize to uppercase
+	if (value >= 'a' && value <= 'z') value = (value - 'a') + 'A';
+	char existingChar;
+	WordBeginning across, down;
+	std::tie(existingChar, across, down) = grid_[row][column];
+	if (existingChar == value) return true;
+	if (existingChar != WILDCARD) {
+		std::cout << "Attempting to overwrite existing " << existingChar
+				  << " at (" << row << ", " << column << ")." << std::endl;
+		return false;
+	}
+	std::get<0>(grid_[row][column]) = value;
+	if (across != INVALID_ACROSS) {
+		auto& existing = words_[across];
+		std::get<1>(existing)[column - std::get<1>(across)] = value;
+	}
+	if (down != INVALID_DOWN) {
+		auto& existing = words_[down];
+		std::get<1>(existing)[row - std::get<0>(down)] = value;
+	}
+	return true;
 }
 
 std::ostream& operator<<(std::ostream& os, const Crossword& cw) {

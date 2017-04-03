@@ -16,6 +16,7 @@
 #include <utility>
 #include <vector>
 
+/// A representation of a crossword puzzle.
 class Crossword {
    public:
 	/// A specification for a word's direction.
@@ -24,7 +25,7 @@ class Crossword {
 	static const char WILDCARD;
 	/// The character representing a black square in the grid.
 	static const char BLACK_SQUARE;
-	/// A type representing a starting location and
+	/// A type representing a starting location and direction of a word.
 	typedef std::tuple<int, int, WordDirection> WordBeginning;
 	/// A tuple denoting a starting row and column, direction, and current
 	/// values of a particular word in the puzzle.
@@ -49,6 +50,9 @@ class Crossword {
 	static std::unique_ptr<Crossword> Create(int height, int width,
 											 const std::vector<Word>& words);
 
+	static std::pair<bool, Crossword> Solve(
+		Crossword initial, const std::vector<std::string>& wordlist);
+
 	friend std::ostream& operator<<(std::ostream& os, const Crossword& cw);
 
 	//   private:  // TODO uncomment this once ready
@@ -63,6 +67,11 @@ class Crossword {
 	/// Finds the word that is the most constrained in the given puzzle. If no
 	/// unconstrained words are present in the puzzle, returns false.
 	bool mostConstrained(Word* out);
+
+	/// Sets the specified cell in the board to be the specified character.
+	/// Returns false if the operation failed for some reason. Normalizes all
+	/// characters to uppercase.
+	bool setCharacter(char value, int row, int column);
 
 	int height_, width_;
 	std::map<WordBeginning, Word> words_;
