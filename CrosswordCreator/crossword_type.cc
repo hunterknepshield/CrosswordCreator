@@ -80,7 +80,7 @@ std::unique_ptr<Crossword> Crossword::Create(int height, int width,
 		new Crossword(height, width, wordMap, grid));
 }
 
-bool Crossword::mostConstrained(Crossword::Word* out) {
+bool Crossword::mostConstrained(Word* out) {
 	int minimumUnknowns = std::numeric_limits<int>::max();
 	for (const auto& beginningAndWord : words_) {
 		const auto& word = beginningAndWord.second;
