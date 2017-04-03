@@ -166,30 +166,30 @@ std::pair<bool, Crossword> Crossword::Solve(
 		std::cout << puzzle << std::endl;
 		// We've successfully set every character for this possibility. Recurse.
 		{
+			// Inner scope to prevent issues with the compiler complaining about
+			// initialization being skipped by the goto.
 			const auto& solvedWithPuzzle =
 				Solve(puzzle, wordlist, randomWordlistSelection, verbosity);
 			if (solvedWithPuzzle.first) return solvedWithPuzzle;
 		}
 	possibilityFailed:
-		// For some reason, the compiler wants a statement here...
+		// Undo everything in this word that used to be a wildcard.
+		for (int i = 0; i < wordLength; i++) {
+			if (undo[i])
+				puzzle.clearCharacter(
+									  direction == ACROSS ? row : row + i,
+									  direction == ACROSS ? column + i : column);
+		}
 		switch (verbosity) {
 			case 2:
 			case 1:
 				std::cout << "Failed to use '" << possibility << "' to fill in "
 						  << mostConstrained << std::endl;
+				std::cout << "Reverted to previous puzzle state:" << std::endl;
 				std::cout << puzzle << std::endl;
 			default:
 				break;
 		}
-		// Undo everything in this word that used to be a wildcard.
-		for (int i = 0; i < wordLength; i++) {
-			if (undo[i])
-				puzzle.clearCharacter(
-					direction == ACROSS ? row : row + i,
-					direction == ACROSS ? column + i : column);
-		}
-		std::cout << "After undoing:" << std::endl;
-		std::cout << puzzle << std::endl;
 	}
 	// We've exhausted all possibilities at this level, backtrack.
 	return {false, puzzle};
