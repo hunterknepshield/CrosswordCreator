@@ -177,8 +177,8 @@ std::pair<bool, Crossword> Crossword::Solve(
 		for (int i = 0; i < wordLength; i++) {
 			if (undo[i])
 				puzzle.clearCharacter(
-									  direction == ACROSS ? row : row + i,
-									  direction == ACROSS ? column + i : column);
+					direction == ACROSS ? row : row + i,
+					direction == ACROSS ? column + i : column);
 		}
 		switch (verbosity) {
 			case 2:
