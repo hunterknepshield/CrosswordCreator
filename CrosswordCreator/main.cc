@@ -75,7 +75,8 @@ int main(void) {
 		return 1;
 	}
 
-	std::cout << crossword->mostConstrained() << std::endl;
+	Crossword::Word mostConstrained;
+	std::cout << crossword->mostConstrained(&mostConstrained) << std::endl;
 
 	return 0;
 }

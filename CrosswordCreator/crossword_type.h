@@ -61,8 +61,8 @@ class Crossword {
 		: height_(height), width_(width), words_(words), grid_(grid) {}
 
 	/// Finds the word that is the most constrained in the given puzzle. If no
-	/// unconstrained words are present in the puzzle, returns INVALID_ACROSS.
-	Word mostConstrained();
+	/// unconstrained words are present in the puzzle, returns false.
+	bool mostConstrained(Word* out);
 
 	int height_, width_;
 	std::map<WordBeginning, Word> words_;

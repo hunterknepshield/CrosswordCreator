@@ -80,9 +80,8 @@ std::unique_ptr<Crossword> Crossword::Create(int height, int width,
 		new Crossword(height, width, wordMap, grid));
 }
 
-Crossword::Word Crossword::mostConstrained() {
+bool Crossword::mostConstrained(Crossword::Word* out) {
 	int minimumUnknowns = std::numeric_limits<int>::max();
-	Word ret = std::make_tuple(INVALID_ACROSS, std::vector<char>{});
 	for (const auto& beginningAndWord : words_) {
 		const auto& word = beginningAndWord.second;
 		const auto& characters = std::get<1>(word);
@@ -95,10 +94,10 @@ Crossword::Word Crossword::mostConstrained() {
 										   });
 		if (unknownCount < minimumUnknowns) {
 			minimumUnknowns = unknownCount;
-			ret = word;
+			*out = word;
 		}
 	}
-	return ret;
+	return minimumUnknowns != std::numeric_limits<int>::max();
 }
 
 std::ostream& operator<<(std::ostream& os, const Crossword& cw) {
