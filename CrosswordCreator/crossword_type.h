@@ -39,6 +39,7 @@ class Crossword {
 	/// An value indicating no down word in this cell.
 	static const WordBeginning INVALID_DOWN;
 
+	/// Wrapper around the nasty nested tuple initialization.
 	static Word MakeWord(int row, int column, WordDirection direction,
 						 const std::vector<char>& characters) {
 		return std::make_tuple(std::make_tuple(row, column, direction),
@@ -50,9 +51,11 @@ class Crossword {
 	static std::unique_ptr<Crossword> Create(int height, int width,
 											 const std::vector<Word>& words);
 
+	/// Takes a partially solved instance and uses a heuristic that attempts to
+	/// fill in the most-constrained word first using the supplied word list.
 	static std::pair<bool, Crossword> Solve(
 		Crossword puzzle, const std::vector<std::string>& wordlist,
-		int verbosity = 0);
+		bool randomWordlistSelection, int verbosity = 0);
 
 	friend std::ostream& operator<<(std::ostream& os, const Crossword& cw);
 

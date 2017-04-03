@@ -13,6 +13,7 @@
 #include <map>
 #include <memory>
 #include <numeric>
+#include <random>
 #include <regex>
 #include <tuple>
 #include <utility>
@@ -83,7 +84,8 @@ std::unique_ptr<Crossword> Crossword::Create(int height, int width,
 }
 
 std::pair<bool, Crossword> Crossword::Solve(
-	Crossword puzzle, const std::vector<std::string>& wordlist, int verbosity) {
+	Crossword puzzle, const std::vector<std::string>& wordlist,
+	bool randomWordlistSelection, int verbosity) {
 	Word mostConstrained;
 	if (!puzzle.mostConstrained(&mostConstrained)) return {true, puzzle};
 
@@ -119,14 +121,20 @@ std::pair<bool, Crossword> Crossword::Solve(
 				std::cout << possibility << std::endl;
 			}
 		case 1:
-			std::cout << "Have " << possibilities.size() << " possibilit"
-					  << (possibilities.size() == 1 ? "y" : "ies") << "."
-					  << std::endl;
+			std::cout << "Found " << possibilities.size() << " possibilit"
+					  << (possibilities.size() == 1 ? "y" : "ies")
+					  << " in the word list." << std::endl;
 		default:
 			break;
 	}
-
 	if (possibilities.size() == 0) return {false, puzzle};
+
+	if (randomWordlistSelection) {
+		std::random_device randomDevice;
+		std::mt19937 generator(randomDevice());
+		std::shuffle(possibilities.begin(), possibilities.end(), generator);
+	}
+
 	for (const auto& possibility : possibilities) {
 		// Set the word in the puzzle. Undo if we fail anywhere along the way.
 		std::vector<bool> undo(wordLength, false);
@@ -141,7 +149,9 @@ std::pair<bool, Crossword> Crossword::Solve(
 						case 2:
 						case 1:
 							std::cout << "Failed to set character " << i
-									  << " of " << possibility << std::endl;
+									  << " of '" << possibility
+									  << "' to fill in " << mostConstrained
+									  << std::endl;
 						default:
 							break;
 					}
@@ -161,12 +171,20 @@ std::pair<bool, Crossword> Crossword::Solve(
 		std::cout << puzzle << std::endl;
 		// We've successfully set every character for this possibility. Recurse.
 		{
-			const auto& solvedWithPuzzle = Solve(puzzle, wordlist);
+			const auto& solvedWithPuzzle =
+				Solve(puzzle, wordlist, randomWordlistSelection, verbosity);
 			if (solvedWithPuzzle.first) return solvedWithPuzzle;
 		}
 	possibilityFailed:
 		// For some reason, the compiler wants a statement here...
-		void();
+		switch (verbosity) {
+			case 2:
+			case 1:
+				std::cout << "Failed to use '" << possibility << "' to fill in "
+						  << mostConstrained << std::endl;
+			default:
+				break;
+		}
 	}
 	// We've exhausted all possibilities at this level, backtrack.
 	return {false, puzzle};

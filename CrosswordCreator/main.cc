@@ -16,6 +16,9 @@
 
 // Verbosity settings. 0 = silent, 1 = print some things, 2 = print everything.
 int verbosity = 1;
+// Randomness settings. If false, the first valid word from the wordlist is
+// inserted, resulting in a puzzle that has lots of 'A' words.
+bool randomWordlistSelection = true;
 
 int main(void) {
 	int height, width;
@@ -76,13 +79,10 @@ int main(void) {
 			  << std::endl;
 	std::cout << std::endl;
 
-	//	bool result = crossword.setCharacter('A', 0, 0);
-	//	if (!result) {
-	//		std::cout << "Failed to set the character." << std::endl;
-	//	}
-	std::cout << crossword;
+	std::cout << "Initial puzzle:" << std::endl;
+	std::cout << crossword << std::endl;
 
-	Crossword::Solve(crossword, wordlist, verbosity);
+	Crossword::Solve(crossword, wordlist, randomWordlistSelection, verbosity);
 
 	return 0;
 }
