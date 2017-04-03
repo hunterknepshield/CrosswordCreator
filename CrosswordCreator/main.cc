@@ -9,6 +9,7 @@
 #include <fstream>
 #include <iostream>
 #include <memory>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -75,6 +76,22 @@ int main(void) {
 	std::copy(std::istream_iterator<std::string>(file),
 			  std::istream_iterator<std::string>(),
 			  std::back_inserter(wordlist));
+	// Dedupe with a set.
+	if (verbosity > 0) {
+		std::cout << "Read " << wordlist.size()
+				  << " words from the wordlist. Deduping..." << std::endl;
+	}
+	std::set<std::string> dedupedWordlist;
+	for (const auto& word : wordlist) {
+		std::string copy = word;
+		for (auto& character : copy) {
+			if (character >= 'a' && character <= 'z')
+				character = (character - 'a') + 'A';
+		}
+		dedupedWordlist.insert(copy);
+	}
+	wordlist.clear();
+	wordlist.assign(dedupedWordlist.begin(), dedupedWordlist.end());
 	std::cout << "Read " << wordlist.size() << " words from the wordlist."
 			  << std::endl;
 	std::cout << std::endl;

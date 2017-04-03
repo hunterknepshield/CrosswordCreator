@@ -15,6 +15,8 @@
 #include <numeric>
 #include <random>
 #include <regex>
+#include <set>
+#include <string>
 #include <tuple>
 #include <utility>
 #include <vector>
@@ -102,16 +104,30 @@ std::pair<bool, Crossword> Crossword::Solve(
 	WordDirection direction;
 	std::tie(row, column, direction) = std::get<0>(mostConstrained);
 	const std::vector<char>& characters = std::get<1>(mostConstrained);
-	// First, throw out any words of the wrong length or don't match the current
-	// wildcard pattern.
+	// First, throw out any words that:
+	// - Are the wrong length,
+	// - Don't match the current wildcard pattern, or
+	// - Already appear elsewhere in the puzzle.
 	std::vector<std::string> possibilities(wordlist.size());
+	// Easiest filter: length
 	auto wordLength = characters.size();
+	// Next filter: regex
 	std::string pattern(characters.begin(), characters.end());
 	std::regex regex(pattern, std::regex::icase);
+	// Final filter: existing words
+	std::set<std::string> existingWords;
+	for (const auto& beginningAndWord : puzzle.words_) {
+		const auto& wordCharacters = std::get<1>(beginningAndWord.second);
+		if (std::find(wordCharacters.begin(), wordCharacters.end(), WILDCARD) ==
+			wordCharacters.end())
+			existingWords.insert(
+				std::string(wordCharacters.begin(), wordCharacters.end()));
+	}
 	auto filterIter = std::copy_if(
 		wordlist.begin(), wordlist.end(), possibilities.begin(),
 		[&](const std::string& s) {
-			return s.size() == wordLength && std::regex_match(s, regex);
+			return s.size() == wordLength && std::regex_match(s, regex) &&
+				   existingWords.find(s) == existingWords.end();
 		});
 	possibilities.resize(std::distance(possibilities.begin(), filterIter));
 

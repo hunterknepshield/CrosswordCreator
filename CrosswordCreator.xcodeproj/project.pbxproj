@@ -28,6 +28,7 @@
 		5A45C67A1E91881A00AB4ED3 /* main.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cc; sourceTree = "<group>"; };
 		5A4AE6341E918DC700A453B4 /* crossword_type.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = crossword_type.cc; sourceTree = "<group>"; };
 		5A4AE6351E918DC700A453B4 /* crossword_type.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crossword_type.h; sourceTree = "<group>"; };
+		5ADD8AC81E92162A00723B31 /* SamplePuzzle1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SamplePuzzle1.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,11 +61,20 @@
 		5A45C6791E91881A00AB4ED3 /* CrosswordCreator */ = {
 			isa = PBXGroup;
 			children = (
+				5ADD8AC91E92162F00723B31 /* Sample Input */,
 				5A45C67A1E91881A00AB4ED3 /* main.cc */,
 				5A4AE6341E918DC700A453B4 /* crossword_type.cc */,
 				5A4AE6351E918DC700A453B4 /* crossword_type.h */,
 			);
 			path = CrosswordCreator;
+			sourceTree = "<group>";
+		};
+		5ADD8AC91E92162F00723B31 /* Sample Input */ = {
+			isa = PBXGroup;
+			children = (
+				5ADD8AC81E92162A00723B31 /* SamplePuzzle1.txt */,
+			);
+			name = "Sample Input";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
