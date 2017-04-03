@@ -75,5 +75,7 @@ int main(void) {
 		return 1;
 	}
 
+	std::cout << crossword->mostConstrained() << std::endl;
+
 	return 0;
 }

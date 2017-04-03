@@ -11,6 +11,7 @@
 #include <iostream>
 #include <map>
 #include <memory>
+#include <numeric>
 #include <tuple>
 #include <utility>
 #include <vector>
@@ -40,6 +41,7 @@ std::unique_ptr<Crossword> Crossword::Create(int height, int width,
 			// There's already a word that starts here.
 			if (wordMap.find(beginningLocation) != wordMap.end())
 				return nullptr;
+			wordMap[beginningLocation] = word;
 			std::tie(r, c, direction) = beginningLocation;
 			for (const auto& character : characters) {
 				auto& cell = grid[r][c];
@@ -78,6 +80,27 @@ std::unique_ptr<Crossword> Crossword::Create(int height, int width,
 		new Crossword(height, width, wordMap, grid));
 }
 
+Crossword::Word Crossword::mostConstrained() {
+	int minimumUnknowns = std::numeric_limits<int>::max();
+	Word ret = std::make_tuple(INVALID_ACROSS, std::vector<char>{});
+	for (const auto& beginningAndWord : words_) {
+		const auto& word = beginningAndWord.second;
+		const auto& characters = std::get<1>(word);
+		// Count all wildcards currently in the word.
+		int unknownCount = std::accumulate(characters.begin(), characters.end(),
+										   0, [](int soFar, const char& c) {
+											   if (c == WILDCARD)
+												   return soFar + 1;
+											   return soFar;
+										   });
+		if (unknownCount < minimumUnknowns) {
+			minimumUnknowns = unknownCount;
+			ret = word;
+		}
+	}
+	return ret;
+}
+
 std::ostream& operator<<(std::ostream& os, const Crossword& cw) {
 	for (const auto& row : cw.grid_) {
 		for (const auto& cell : row) {
@@ -85,5 +108,27 @@ std::ostream& operator<<(std::ostream& os, const Crossword& cw) {
 		}
 		os << std::endl;
 	}
+	return os;
+}
+
+std::ostream& operator<<(std::ostream& os,
+						 const Crossword::WordBeginning& wordBeginning) {
+	os << "(" << std::get<0>(wordBeginning) << ", "
+	   << std::get<1>(wordBeginning) << ") ";
+	switch (std::get<2>(wordBeginning)) {
+		case Crossword::ACROSS:
+			os << "across";
+			break;
+		case Crossword::DOWN:
+			os << "down";
+			break;
+	}
+	return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const Crossword::Word& word) {
+	os << std::get<0>(word) << ": '";
+	for (const auto& c : std::get<1>(word)) os << c;
+	os << "'";
 	return os;
 }

@@ -51,7 +51,7 @@ class Crossword {
 
 	friend std::ostream& operator<<(std::ostream& os, const Crossword& cw);
 
-   private:
+	//   private:  // TODO uncomment this once ready
 	/// An intermediate value that is the default for a not-yet-populated grid.
 	/// Should never appear in a valid Crossword instance.
 	static const Cell DEFAULT_CELL;
@@ -60,11 +60,17 @@ class Crossword {
 			  const std::vector<std::vector<Cell>>& grid)
 		: height_(height), width_(width), words_(words), grid_(grid) {}
 
-	// WordBeginning mostConstrained();
+	/// Finds the word that is the most constrained in the given puzzle. If no
+	/// unconstrained words are present in the puzzle, returns INVALID_ACROSS.
+	Word mostConstrained();
 
 	int height_, width_;
 	std::map<WordBeginning, Word> words_;
 	std::vector<std::vector<Cell>> grid_;
 };
+
+std::ostream& operator<<(std::ostream& os,
+						 const Crossword::WordBeginning& wordBeginning);
+std::ostream& operator<<(std::ostream& os, const Crossword::Word& word);
 
 #endif /* crossword_type_h */
