@@ -12,6 +12,7 @@
 #include <iostream>
 #include <map>
 #include <memory>
+#include <string>
 #include <tuple>
 #include <utility>
 #include <vector>
@@ -50,6 +51,9 @@ class Crossword {
 	/// grid from the words.
 	static std::unique_ptr<Crossword> Create(int height, int width,
 											 const std::vector<Word>& words);
+	/// Takes a pre-populated grid and derives the word locations from that.
+	static std::unique_ptr<Crossword> Create(
+		const std::vector<std::string>& rawGrid);
 
 	/// Takes a partially solved instance and uses a heuristic that attempts to
 	/// fill in the most-constrained word first using the supplied word list.
@@ -86,6 +90,7 @@ class Crossword {
 	std::vector<std::vector<Cell>> grid_;
 };
 
+// Custom stream operators to make debugging prettier.
 std::ostream& operator<<(std::ostream& os,
 						 const Crossword::WordBeginning& wordBeginning);
 std::ostream& operator<<(std::ostream& os, const Crossword::Word& word);
