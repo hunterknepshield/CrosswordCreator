@@ -61,6 +61,13 @@ class Crossword {
 		Crossword puzzle, const std::vector<std::string>& wordlist,
 		bool randomWordlistSelection, int verbosity = 0);
 
+	/// Tells this instance to dump its entire contents, including words, the
+	/// next time it is sent to an output stream.
+	const Crossword& printEverything() const {
+		printEverything_ = true;
+		return *this;
+	}
+
 	friend std::ostream& operator<<(std::ostream& os, const Crossword& cw);
 
    private:
@@ -88,6 +95,7 @@ class Crossword {
 	int height_, width_;
 	std::map<WordBeginning, Word> words_;
 	std::vector<std::vector<Cell>> grid_;
+	mutable bool printEverything_;
 };
 
 // Custom stream operators to make debugging prettier.

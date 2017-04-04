@@ -78,6 +78,19 @@ std::ostream& operator<<(std::ostream& os, const Crossword& cw) {
 		}
 		os << std::endl;
 	}
+	if (cw.printEverything_) {
+		os << std::endl << "Across:" << std::endl;
+		for (const auto& beginningAndWord : cw.words_)
+			if (std::get<2>(beginningAndWord.first) == Crossword::ACROSS)
+				os << beginningAndWord.second << std::endl;
+
+		os << std::endl << "Down:" << std::endl;
+		for (const auto& beginningAndWord : cw.words_)
+			if (std::get<2>(beginningAndWord.first) == Crossword::DOWN)
+				os << beginningAndWord.second << std::endl;
+
+		cw.printEverything_ = false;
+	}
 	return os;
 }
 

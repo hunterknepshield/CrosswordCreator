@@ -87,7 +87,7 @@ int main(void) {
 	}
 	// Ensure we actually generated a valid instance before continuing.
 	if (!crosswordPtr) {
-		std::cout << "Failed to create a Crossword instance." << std::endl;
+		std::cerr << "Failed to create a Crossword instance." << std::endl;
 		return 1;
 	}
 	auto& crossword = *crosswordPtr;
@@ -123,9 +123,16 @@ int main(void) {
 	std::cout << std::endl;
 
 	std::cout << "Initial puzzle:" << std::endl;
-	std::cout << crossword << std::endl;
+	std::cout << crossword.printEverything() << std::endl;
 
-	Crossword::Solve(crossword, wordlist, randomWordlistSelection, verbosity);
+	const auto& result = Crossword::Solve(crossword, wordlist,
+										  randomWordlistSelection, verbosity);
+	if (result.first) {
+		std::cout << "Generated a puzzle:" << std::endl;
+		std::cout << result.second.printEverything() << std::endl;
+	} else {
+		std::cout << "Failed to generate a puzzle." << std::endl;
+	}
 
 	return 0;
 }
