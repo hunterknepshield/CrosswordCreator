@@ -113,8 +113,14 @@ std::pair<bool, Crossword> Crossword::Solve(
 			// If this isn't a wildcard, we're guaranteed a match because of the
 			// filtering from above.
 		}
-		std::cout << "Used '" << possibility << "'" << std::endl;
-		std::cout << puzzle << std::endl;
+		switch (verbosity) {
+			case 2:
+			case 1:
+				std::cout << "Used '" << possibility << "'" << std::endl;
+				std::cout << puzzle << std::endl;
+			default:
+				break;
+		}
 		// We've successfully set every character for this possibility. Recurse.
 		{
 			// Inner scope to prevent issues with the compiler complaining about
