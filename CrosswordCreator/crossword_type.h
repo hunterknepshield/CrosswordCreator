@@ -59,7 +59,7 @@ class Crossword {
 
 	friend std::ostream& operator<<(std::ostream& os, const Crossword& cw);
 
-	//   private:  // TODO uncomment this once ready
+   private:
 	/// An intermediate value that is the default for a not-yet-populated grid.
 	/// Should never appear in a valid Crossword instance.
 	static const Cell DEFAULT_CELL;
