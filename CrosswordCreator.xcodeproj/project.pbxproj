@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		5A45C67B1E91881A00AB4ED3 /* main.cc in Sources */ = {isa = PBXBuildFile; fileRef = 5A45C67A1E91881A00AB4ED3 /* main.cc */; };
 		5A4AE6361E918DC700A453B4 /* crossword_type.cc in Sources */ = {isa = PBXBuildFile; fileRef = 5A4AE6341E918DC700A453B4 /* crossword_type.cc */; };
+		5A4E21A31E936B8000DE9D3F /* crossword_solve.cc in Sources */ = {isa = PBXBuildFile; fileRef = 5A4E21A21E936B8000DE9D3F /* crossword_solve.cc */; };
+		5A4E21A51E936C6200DE9D3F /* crossword_create.cc in Sources */ = {isa = PBXBuildFile; fileRef = 5A4E21A41E936C6200DE9D3F /* crossword_create.cc */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,6 +31,8 @@
 		5A4AE6341E918DC700A453B4 /* crossword_type.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = crossword_type.cc; sourceTree = "<group>"; };
 		5A4AE6351E918DC700A453B4 /* crossword_type.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crossword_type.h; sourceTree = "<group>"; };
 		5A4E21A11E93676A00DE9D3F /* SamplePuzzle2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SamplePuzzle2.txt; sourceTree = "<group>"; };
+		5A4E21A21E936B8000DE9D3F /* crossword_solve.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = crossword_solve.cc; sourceTree = "<group>"; };
+		5A4E21A41E936C6200DE9D3F /* crossword_create.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = crossword_create.cc; sourceTree = "<group>"; };
 		5ADD8AC81E92162A00723B31 /* SamplePuzzle1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SamplePuzzle1.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -64,6 +68,8 @@
 			children = (
 				5ADD8AC91E92162F00723B31 /* Sample Input */,
 				5A45C67A1E91881A00AB4ED3 /* main.cc */,
+				5A4E21A41E936C6200DE9D3F /* crossword_create.cc */,
+				5A4E21A21E936B8000DE9D3F /* crossword_solve.cc */,
 				5A4AE6341E918DC700A453B4 /* crossword_type.cc */,
 				5A4AE6351E918DC700A453B4 /* crossword_type.h */,
 			);
@@ -136,6 +142,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A4E21A51E936C6200DE9D3F /* crossword_create.cc in Sources */,
+				5A4E21A31E936B8000DE9D3F /* crossword_solve.cc in Sources */,
 				5A4AE6361E918DC700A453B4 /* crossword_type.cc in Sources */,
 				5A45C67B1E91881A00AB4ED3 /* main.cc in Sources */,
 			);
