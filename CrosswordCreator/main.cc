@@ -108,13 +108,12 @@ int main(void) {
 				  << " words from the wordlist. Deduping..." << std::endl;
 	}
 	std::set<std::string> dedupedWordlist;
-	for (const auto& word : wordlist) {
-		std::string copy = word;
-		for (auto& character : copy) {
+	for (auto& word : wordlist) {
+		for (auto& character : word) {
 			if (character >= 'a' && character <= 'z')
 				character = (character - 'a') + 'A';
 		}
-		dedupedWordlist.insert(copy);
+		dedupedWordlist.insert(word);
 	}
 	wordlist.clear();
 	wordlist.assign(dedupedWordlist.begin(), dedupedWordlist.end());
