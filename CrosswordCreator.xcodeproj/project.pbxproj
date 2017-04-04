@@ -34,6 +34,7 @@
 		5A4E21A21E936B8000DE9D3F /* crossword_solve.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = crossword_solve.cc; sourceTree = "<group>"; };
 		5A4E21A41E936C6200DE9D3F /* crossword_create.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = crossword_create.cc; sourceTree = "<group>"; };
 		5ADD8AC81E92162A00723B31 /* SamplePuzzle1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SamplePuzzle1.txt; sourceTree = "<group>"; };
+		5AFDF6541E93741000294D7D /* SamplePuzzle3.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SamplePuzzle3.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +82,7 @@
 			children = (
 				5ADD8AC81E92162A00723B31 /* SamplePuzzle1.txt */,
 				5A4E21A11E93676A00DE9D3F /* SamplePuzzle2.txt */,
+				5AFDF6541E93741000294D7D /* SamplePuzzle3.txt */,
 			);
 			name = "Sample Input";
 			sourceTree = "<group>";
