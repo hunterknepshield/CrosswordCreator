@@ -1,0 +1,51 @@
+<ACROSS PUZZLE>
+<TITLE>
+
+<AUTHOR>
+Hunter Knepshield
+<COPYRIGHT>
+
+<SIZE>
+9x9
+<GRID>
+HEX...ULL
+EMMA..NAE
+YUAN.ATEN
+..SIXFOLD
+...MOI...
+SQUARED..
+MULL.LEAD
+OIN..DADA
+GTA...LAG
+<ACROSS>
+A curse. Alternatively, a comp. base.
+The C family's largest positive-only type, with a min. width of 64 bits.
+Actress Watson.
+A Scottish form of "no."
+An ancient Chinese dynasty, now the basic unit of its currency.
+An Egyptian deity representing the solar disc.
+600% improvement.
+French pronoun for the speaker.
+Raised to the power of 2.
+To consider carefully.
+As a noun, this may be a metal or rope depending on pronunciation.
+John Callen's dwarf in The Hobbit trilogy.
+An absurdist art movement or a baby's utterance.
+Rockstar's best-known game ser.
+An online gamer's worst nightmare.
+<DOWN>
+A casual greeting.
+Ostrich relative.
+Dec. Christian holiday.
+Archaic preposition, occasionally heard in wedding vows.
+Uncommon girl's name, religious.
+Loan.
+A singular specimen of fauna.
+Off the beaten path.
+Not subtraction: 1 ? 1 = 0.
+Low-hanging pollution.
+To cease or give up.
+The partner of a radius.
+Trump's art form.
+A Pascal derivative. Alternatively, a law concerning ramps and more.
+A particular type of graph with many poly. time conveniences.
