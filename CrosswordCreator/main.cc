@@ -115,16 +115,14 @@ int main(void) {
 		}
 		dedupedWordlist.insert(word);
 	}
-	wordlist.clear();
-	wordlist.assign(dedupedWordlist.begin(), dedupedWordlist.end());
-	std::cout << "Read " << wordlist.size() << " words from the wordlist."
-			  << std::endl;
+	std::cout << "Read " << dedupedWordlist.size()
+			  << " words from the wordlist." << std::endl;
 	std::cout << std::endl;
 
 	std::cout << "Initial puzzle:" << std::endl;
 	std::cout << crossword.printEverything() << std::endl;
 
-	const auto& result = Crossword::Solve(crossword, wordlist,
+	const auto& result = Crossword::Solve(crossword, dedupedWordlist,
 										  randomWordlistSelection, verbosity);
 	if (result.first) {
 		std::cout << "Generated a puzzle:" << std::endl;

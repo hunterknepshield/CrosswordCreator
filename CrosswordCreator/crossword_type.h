@@ -12,6 +12,7 @@
 #include <iostream>
 #include <map>
 #include <memory>
+#include <set>
 #include <string>
 #include <tuple>
 #include <utility>
@@ -58,7 +59,7 @@ class Crossword {
 	/// Takes a partially solved instance and uses a heuristic that attempts to
 	/// fill in the most-constrained word first using the supplied word list.
 	static std::pair<bool, Crossword> Solve(
-		Crossword puzzle, const std::vector<std::string>& wordlist,
+		Crossword puzzle, const std::set<std::string>& wordlist,
 		bool randomWordlistSelection, int verbosity = 0);
 
 	/// Tells this instance to dump its entire contents, including words, the

@@ -21,7 +21,7 @@
 #include <vector>
 
 std::pair<bool, Crossword> Crossword::Solve(
-	Crossword puzzle, const std::vector<std::string>& wordlist,
+	Crossword puzzle, const std::set<std::string>& wordlist,
 	bool randomWordlistSelection, int verbosity) {
 	Word mostConstrained;
 	if (!puzzle.mostConstrained(&mostConstrained)) return {true, puzzle};
@@ -109,9 +109,44 @@ std::pair<bool, Crossword> Crossword::Solve(
 					}
 					goto possibilityFailed;
 				}
+				// If we just completed a crossing word, make sure that it's
+				// valid too.
+				const auto& modifiedCell =
+					puzzle.grid_[direction == ACROSS ? row : row + i]
+								[direction == ACROSS ? column + i : column];
+				const auto& crossingWordBeginning =
+					direction == ACROSS ? std::get<2>(modifiedCell)
+										: std::get<1>(modifiedCell);
+				const auto& crossingWord = puzzle.words_[crossingWordBeginning];
+				const auto& crossingCharacters = std::get<1>(crossingWord);
+				if (std::find(crossingCharacters.begin(),
+							  crossingCharacters.end(),
+							  WILDCARD) == crossingCharacters.end()) {
+					// No wildcards, so we've just completed this word.
+					std::string crossingString(crossingCharacters.begin(),
+											   crossingCharacters.end());
+					if (wordlist.find(crossingString) == wordlist.end()) {
+						// We generated an invalid word.
+						switch (verbosity) {
+							case 2:
+							case 1:
+								std::cout
+									<< "Failed to set word " << possibility
+									<< " because it broke the word crossing at "
+									   "character "
+									<< i + 1 << " ('" << crossingString << "')"
+									<< std::endl;
+								std::cout << puzzle << std::endl;
+							default:
+								break;
+						}
+						goto possibilityFailed;
+					}
+				}
 			}
-			// If this isn't a wildcard, we're guaranteed a match because of the
-			// filtering from above.
+			// If this isn't a wildcard, we're guaranteed a match of
+			// characters[i] and possibility[i] because of the filtering that's
+			// done above.
 		}
 		switch (verbosity) {
 			case 2:

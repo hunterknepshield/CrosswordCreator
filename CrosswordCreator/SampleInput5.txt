@@ -1,0 +1,13 @@
+9
+
+______ULL
+..W___P..
+..A._.L..
+_ARTHLIKE
+__D...F__
+..R...T._
+..O._.E..
+..B___D..
+..E______
+
+/usr/share/dict/words
