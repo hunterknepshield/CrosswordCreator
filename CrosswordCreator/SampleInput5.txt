@@ -1,13 +1,13 @@
 9
 
-______ULL
-..W___P..
-..A._.L..
-_ARTHLIKE
-__D...F__
-..R...T._
-..O._.E..
-..B___D..
-..E______
+______W..
+..C___I..
+..R._GZIP
+BRILLIANT
+__M...R__
+POINTEDLY
+..N._.R..
+..A___Y..
+ULL______
 
 /usr/share/dict/words

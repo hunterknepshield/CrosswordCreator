@@ -105,14 +105,20 @@ int main(void) {
 	// Dedupe with a set.
 	if (verbosity > 0) {
 		std::cout << "Read " << wordlist.size()
-				  << " words from the wordlist. Deduping..." << std::endl;
+				  << " words from the wordlist. Deduping and discarding "
+					 "invalid words..."
+				  << std::endl;
 	}
 	std::set<std::string> dedupedWordlist;
+	bool skip;
 	for (auto& word : wordlist) {
+		skip = false;
 		for (auto& character : word) {
 			if (character >= 'a' && character <= 'z')
 				character = (character - 'a') + 'A';
+			if (character < 'A' || character > 'Z') skip = true;
 		}
+		if (skip) continue;
 		dedupedWordlist.insert(word);
 	}
 	std::cout << "Read " << dedupedWordlist.size()
